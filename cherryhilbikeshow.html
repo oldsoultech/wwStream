@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cherry Hill Bike Show - wwStream</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .movie-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .movie-poster img {
+            width: 300px;
+            height: 450px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .movie-description {
+            font-size: 1.2em;
+            color: #555;
+            max-width: 800px;
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+
+        .play-button {
+            background-color: #ff0000;
+            color: white;
+            font-size: 1.5em;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            margin: 10px 0;
+            display: inline-block;
+        }
+
+        .play-button:hover {
+            background-color: #cc0000;
+        }
+
+        footer {
+            margin-top: 50px;
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Movie Title -->
+        <h1>Cherry Hill Bike Show</h1>
+
+        <!-- Movie Info Section -->
+        <div class="movie-info">
+            <!-- Movie Poster -->
+            <div class="movie-poster">
+                <img src="https://morganwashereon.neocities.org/a%20poster%20that%20reads%20_Cherry%20Hill%20Bike%20Show_%20and%20under%20it%20says%20_With%20Morgan%20_20250904_162434_0000.jpg" alt="No Poster Available">
+            </div>
+
+            <!-- Movie Description -->
+            <div class="movie-description">
+                Grace, Annabell, and Morgan bike around Cherry Hill!
+            </div>
+
+            <!-- Play Show Button -->
+            <a href="https://oldsoultech.github.io/wwStream/cherryhillbikeshowseasonpick.html" class="play-button">Play Show</a>
+
+            <!-- Update Videos Button -->
+            <a href="https://geocities.ws/qlixnewurl/chbsupdatevideos.html" class="play-button">Update Videos</a>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        &copy; <span id="year"></span> Made by the WonderWorks Group.
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+
+</body>
+</html>
