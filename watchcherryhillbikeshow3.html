@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cherry Hill Bike Show - wwStream</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .watch-container {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-weight: bold;
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+        button {
+            background-color: #ff4b4b;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff2c2c;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Watch Cherry Hill Bike Show: Season 2 on wwStream</h1>
+    <div class="watch-container">
+        <label for="episode">Select an Episode:</label>
+        <select id="episode">
+            <option value="episode1">Episode 1: It's (still kinda) Snowy!</option>
+            <option value="episode2">Episode 2: Welcome back Grace! (and an obligatory Five Below Trip)</option>
+            <option value="episode3">Episode 3: CVS and a trip to the ravine!</option>
+            <option value="episode4">Episode 4: </option>
+            <option value="episode5">Episode 5:</option>
+            <option value="episode6">Episode 6:</option>
+          <option value="episode6">Episode 7:</option>
+          <option value="episode6">Episode 8:</option>
+          <option value="episode6">Episode 9:</option>
+          <option value="episode6">Episode 10:</option>
+          <option value="episode6">Episode 11:</option>
+          <option value="episode6">Episode 12:</option>
+        
+          
+         
+            <!-- Add more episodes here -->
+        </select>
+
+        <button onclick="watchEpisode()">Watch</button>
+    </div>
+
+    <script>
+        function watchEpisode() {
+            const episode = document.getElementById("episode").value;
+            switch (episode) {
+                case "episode1":
+                    window.open("https://youtu.be/EpVD4dtKxEs", "_blank"); 
+                    break;
+                case "episode2":
+                    window.open("https://youtu.be/EC8OlMbh1RE", "_blank");
+                    break;
+                case "episode3":
+                    window.open("hhttps://youtu.be/WEFaoX8ZZtc", "_blank");
+                    break;
+                case "episode4":
+                    window.open("http://geocities.ws/qlixnewurl/chickletcomedywaiting.php", "_blank");
+                    break;
+                case "episode5":
+                    window.open("http://geocities.ws/qlixnewurl/chickletcomedywaiting.php", "_blank");
+                    break;
+                case "episode6":
+                    window.open("http://geocities.ws/qlixnewurl/chickletcomedywaiting.php", "_blank");
+                    break;
+                case "episode7":
+                    window.open("http://geocities.ws/qlixnewurl/chickletcomedywaiting.php", "_blank");
+                    break;
+                case "episode8":
+                    window.open("http://geocities.ws/qlixnewurl/chickletcomedywaiting.php", "_blank");
+                    break;
+                case "episode9":
+                    window.open("http://geocities.ws/qlixnewurl/chickletcomedywaiting.php", "_blank");
+                    break;
+                case "episode10":
+                    window.open("http://geocities.ws/qlixnewurl/chickletcomedywaiting.php", "_blank");
+                    break;
+                case "episode11":
+                    window.open("http://geocities.ws/qlixnewurl/chickletcomedywaiting.php", "_blank");
+                    break;
+                case "episode12":
+                    window.open("http://geocities.ws/qlixnewurl/chickletcomedywaiting.php", "_blank");
+                    break;
+                default:
+                    alert("Episode not available!");
+            }
+        }
+    </script>
+
+</body>
+</html>
