@@ -1,0 +1,229 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Watch</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* KEEPING YOUR STYLE EXACTLY THE SAME */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #e50914;
+  --bg: #0e0e0e;
+  --card: #1c1c1c;
+  --card2: #252525;
+  --text: #f0f0f0;
+  --muted: rgba(255,255,255,0.45);
+  --border: rgba(255,255,255,0.08);
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* HERO */
+.hero { height: 70vh; display:flex; align-items:flex-end; padding:40px; background:#000; }
+.hero-title { font-family:'Bebas Neue'; font-size:3rem; }
+.hero-desc { color:var(--muted); margin:10px 0; }
+
+.btn-primary {
+  background: var(--red);
+  border:none;
+  color:#fff;
+  padding:10px 20px;
+  cursor:pointer;
+}
+
+/* GRID */
+.ep-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+  gap:16px;
+  padding:20px;
+}
+
+.ep-card {
+  background:var(--card);
+  cursor:pointer;
+  border-radius:8px;
+  overflow:hidden;
+}
+
+.ep-thumb { aspect-ratio:16/9; background:#333; }
+.ep-thumb img { width:100%; height:100%; object-fit:cover; }
+
+.ep-info { padding:10px; }
+
+/* PLAYER */
+#player-view { display:none; flex-direction:column; height:100vh; background:#000; }
+#player-view.active { display:flex; }
+
+.video-wrap { flex:1; position:relative; }
+video, iframe { width:100%; height:100%; }
+
+.no-video-state {
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--muted);
+}
+</style>
+</head>
+
+<body>
+
+<!-- BROWSE -->
+<div id="browse-view">
+  <div class="hero">
+    <div>
+      <div class="hero-title" id="hero-title">Show Name</div>
+      <div class="hero-desc" id="hero-desc">Description</div>
+      <button class="btn-primary" id="hero-play-btn">Play</button>
+      <button class="btn-primary" onclick="window.location.href='cherryhillbikeshow.html'">
+  Go to Old Show Page
+</button>
+    </div>
+  </div>
+
+  <div class="ep-grid" id="ep-grid"></div>
+</div>
+
+<!-- PLAYER -->
+<div id="player-view">
+  <button onclick="closePlayer()">Back</button>
+  <div class="video-wrap" id="video-wrap">
+    <div class="no-video-state" id="no-vid">No video</div>
+    <video id="vid" controls></video>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════
+   EASY EDIT SECTION
+═══════════════════════════════ */
+
+const SHOW = {
+  name: "Cherry Hill Bike Show",
+  description: "With Morgan.",
+  seasons: 3
+};
+
+const EPISODES = [
+
+  // SEASON 1
+  {season:1, ep:1, title:"S1 E1", desc:"Episode 1", url:"", thumb:"", released:true},
+  {season:1, ep:2, title:"S1 E2", desc:"Episode 2", url:"", thumb:"", released:true},
+  {season:1, ep:3, title:"S1 E3", desc:"Episode 3", url:"", thumb:"", released:false},
+
+  // SEASON 2
+  {season:2, ep:1, title:"S2 E1", desc:"Episode 1", url:"", thumb:"", released:true},
+
+  // SEASON 3
+  {season:3, ep:1, title:"S3 E1", desc:"Episode 1", url:"", thumb:"", released:true}
+
+];
+
+/* APPLY SHOW INFO */
+document.getElementById("hero-title").textContent = SHOW.name;
+document.getElementById("hero-desc").textContent = SHOW.description;
+
+/* YOUTUBE DETECT */
+function getYouTubeID(url) {
+  if (!url) return null;
+  if (url.includes("youtube.com/watch?v=")) return url.split("v=")[1].split("&")[0];
+  if (url.includes("youtu.be/")) return url.split("youtu.be/")[1];
+  return null;
+}
+
+/* BUILD GRID */
+function buildGrid() {
+  const grid = document.getElementById("ep-grid");
+  grid.innerHTML = "";
+
+  const visible = EPISODES.filter(e => e.released !== false);
+
+  visible.forEach(ep => {
+    const i = EPISODES.indexOf(ep);
+
+    const card = document.createElement("div");
+    card.className = "ep-card";
+
+    card.innerHTML = `
+      <div class="ep-thumb">
+        ${ep.thumb ? `<img src="${ep.thumb}">` : ""}
+      </div>
+      <div class="ep-info">
+        <div>${ep.title}</div>
+        <div style="color:gray">${ep.desc}</div>
+      </div>
+    `;
+
+    card.onclick = () => playEp(i);
+    grid.appendChild(card);
+  });
+
+  if (visible.length) {
+    document.getElementById("hero-play-btn").onclick = () => playEp(EPISODES.indexOf(visible[0]));
+  }
+}
+
+/* PLAY */
+function playEp(i) {
+  const ep = EPISODES[i];
+
+  document.getElementById("browse-view").style.display = "none";
+  document.getElementById("player-view").classList.add("active");
+
+  const yt = getYouTubeID(ep.url);
+  const wrap = document.getElementById("video-wrap");
+  const vid = document.getElementById("vid");
+
+  document.getElementById("no-vid").style.display = "none";
+
+  if (yt) {
+    vid.style.display = "none";
+
+    let iframe = document.createElement("iframe");
+    iframe.src = "https://www.youtube.com/embed/" + yt + "?autoplay=1";
+    iframe.allowFullscreen = true;
+    iframe.id = "yt";
+
+    wrap.appendChild(iframe);
+
+  } else if (ep.url) {
+    vid.style.display = "block";
+    vid.src = ep.url;
+    vid.play();
+
+  } else {
+    document.getElementById("no-vid").style.display = "flex";
+  }
+}
+
+/* CLOSE */
+function closePlayer() {
+  document.getElementById("player-view").classList.remove("active");
+  document.getElementById("browse-view").style.display = "";
+
+  const vid = document.getElementById("vid");
+  vid.pause();
+  vid.src = "";
+
+  const yt = document.getElementById("yt");
+  if (yt) yt.remove();
+}
+
+buildGrid();
+</script>
+
+</body>
+</html>
+```
