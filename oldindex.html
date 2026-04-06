@@ -1,2 +1,113 @@
 <!-- This is the old index file renamed as oldindex.html -->
 <!-- Original content of index.html should be copied here if needed. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wwStream</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        /* Poster grid container */
+        .poster-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        /* Each movie poster box */
+        .poster-box {
+            width: 200px;
+            height: 300px;
+            perspective: 1000px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .poster-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Lift effect on hover */
+        .poster-box:hover {
+            transform: scale(1.05);
+        }
+
+        .poster-box img:hover {
+            transform: translateY(-10px);
+        }
+
+        /* Footer styling */
+        footer {
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+     <h1>Welcome to wwStream</h1>
+
+    <!-- Movie Posters Section -->
+    <div class="poster-grid">
+        <!-- Movie 1 -->
+        <div class="poster-box">
+            <img src="http://www.geocities.ws/qlixnewurl/The%20Lodgers%20in%20The%20Hotel%20Poster.png" alt="The Lodgers in the Hotel Poster">
+            <a href="https://oldsoultech.github.io/wwStream/thelodgersinthehotel.html" class="movie-title">The Lodgers in the Hotel</a>
+        </div>
+
+        <!-- Movie 2 -->
+        <div class="poster-box">
+            <img src="https://www.geocities.ws/qlixnewurl/Black%20and%20Green%20Stand-up%20Comedy%20Show%20Flyer.png" alt="Chicklet Comedy Poster">
+            <a href="chickletcomedy.html" class="movie-title">Chicklet Comedy</a>
+        </div>
+
+        <!-- Movie 3 -->
+        <div class="poster-box">
+            <img src="https://geocities.ws/qlixnewurl/Beige%20Retro%20Style%20Movie%20Poster.png" alt="The Walking Ginger Ale Poster">
+            <a href="thewalkinggingerale.html" class="movie-title">The Walking Ginger Ale</a>
+        </div>
+
+        <!-- Movie 4 -->
+        <div class="poster-box">
+            <img src="https://morganwashereon.neocities.org/cosmicmenace.png" alt="The Cosmic Menace Poster">
+            <a href="https://cosmicmenace.liveedit.stream.wwmedia.site/the-cosmic-menace" class="movie-title">The Cosmic Menace</a>
+        </div>
+
+        <!-- Movie 5 -->
+        <div class="poster-box">
+            <img src="https://geocities.ws/qlixnewurl/ChatGPT%20Image%20Jul%2029,%202025,%2008_54_05%20PM.png" alt="Movie 5 Poster">
+            <a href="https://liveedit.stream.wwmedia.site/thewalkingtree" class="movie-title">The Walking Tree</a>
+        </div>
+
+        <!-- Movie 6 -->
+        <div class="poster-box">
+            <img src="https://morganwashereon.neocities.org/a%20poster%20that%20reads%20_Cherry%20Hill%20Bike%20Show_%20and%20under%20it%20says%20_With%20Morgan%20_20250904_162434_0000.jpg" alt="Movie 6 Poster">
+            <a href="cherryhilbikeshow.html" class="movie-title">Cherry Hill Bike Show</a>
+        </div>
+    </div>
+    <!-- Footer Section -->
+    <footer>
+        &copy; 2025 Made by the WonderWorks Group.
+    </footer>
+
+</body>
+</html>
