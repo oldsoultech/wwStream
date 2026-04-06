@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
-/* KEEPING YOUR STYLE EXACTLY THE SAME */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -27,7 +25,6 @@ body {
   color: var(--text);
 }
 
-/* HERO */
 .hero { height: 70vh; display:flex; align-items:flex-end; padding:40px; background:#000; }
 .hero-title { font-family:'Bebas Neue'; font-size:3rem; }
 .hero-desc { color:var(--muted); margin:10px 0; }
@@ -40,7 +37,6 @@ body {
   cursor:pointer;
 }
 
-/* GRID */
 .ep-grid {
   display:grid;
   grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
@@ -60,7 +56,6 @@ body {
 
 .ep-info { padding:10px; }
 
-/* PLAYER */
 #player-view { display:none; flex-direction:column; height:100vh; background:#000; }
 #player-view.active { display:flex; }
 
@@ -80,7 +75,6 @@ video, iframe { width:100%; height:100%; }
 
 <body>
 
-<!-- BROWSE -->
 <div id="browse-view">
   <div class="hero">
     <div>
@@ -88,15 +82,14 @@ video, iframe { width:100%; height:100%; }
       <div class="hero-desc" id="hero-desc">Description</div>
       <button class="btn-primary" id="hero-play-btn">Play</button>
       <button class="btn-primary" onclick="window.location.href='cherryhillbikeshow.html'">
-  Go to Old Show Page
-</button>
+        Go to Old Show Page
+      </button>
     </div>
   </div>
 
   <div class="ep-grid" id="ep-grid"></div>
 </div>
 
-<!-- PLAYER -->
 <div id="player-view">
   <button onclick="closePlayer()">Back</button>
   <div class="video-wrap" id="video-wrap">
@@ -106,10 +99,6 @@ video, iframe { width:100%; height:100%; }
 </div>
 
 <script>
-/* ═══════════════════════════════
-   EASY EDIT SECTION
-═══════════════════════════════ */
-
 const SHOW = {
   name: "Cherry Hill Bike Show",
   description: "With Morgan.",
@@ -133,37 +122,44 @@ const EPISODES = [
   {season:2, ep:4, title:"S2 E4", desc:"Episode 4", url:"https://www.youtube.com/embed/ZJSzXqq15H8", thumb:"chbsthing.png", released:true},
   {season:2, ep:5, title:"S2 E5", desc:"Episode 5", url:"https://www.youtube.com/embed/i4K-Mhi2rx0", thumb:"chbsthing.png", released:true},
   {season:2, ep:6, title:"S2 E6", desc:"Episode 6", url:"https://www.youtube.com/embed/wSctgoWgeAg", thumb:"chbsthing.png", released:true},
-  
 
   // SEASON 3
-  {season:3, ep:1, title:"S3 E1", desc:"Episode 1", url:"https://youtube.com/embed/EpVD4dtKxEs", thumb:"chbsthing.png", released:true}
-  {season:3, ep:2, title:"S3 E2", desc:"Episode 2", url:"https://youtube.com/embed/EC8OlMbh1RE", thumb:"chbsthing.png", released:true}
-  {season:3, ep:3, title:"S3 E3", desc:"Episode 3", url:"https://youtube.com/embed/WEFaoX8ZZtc", thumb:"chbsthing.png", released:true}
-  {season:3, ep:4, title:"S3 E4", desc:"Episode 4", url:"https://youtube.com/embed/M6H-Zq-euhk", thumb:"chbsthing.png", released:true}
-  {season:3, ep:5, title:"S3 E5", desc:"Episode 5", url:"https://youtube.com/embed/fD_24bgn0iI", thumb:"chbsthing.png", released:true}
-  {season:3, ep:6, title:"S3 E6", desc:"Episode 6", url:"https://youtube.com/embed/2KLuCNN-m80", thumb:"chbsthing.png", released:true}
-  {season:3, ep:7, title:"S3 E7", desc:"Episode 7", url:"https://youtube.com/embed/Ko-uPSpXFxo", thumb:"chbsthing.png", released:true}
-  {season:3, ep:8, title:"S3 E8", desc:"Episode 8", url:"", thumb:"", released:false}
-  {season:3, ep:9, title:"S3 E9", desc:"Episode 9", url:"", thumb:"", released:false}
-  {season:3, ep:10, title:"S3 E10", desc:"Episode 10", url:"", thumb:"", released:false}
-  {season:3, ep:11, title:"S3 E11", desc:"Episode 11", url:"", thumb:"", released:false}
+  {season:3, ep:1, title:"S3 E1", desc:"Episode 1", url:"https://youtube.com/embed/EpVD4dtKxEs", thumb:"chbsthing.png", released:true},
+  {season:3, ep:2, title:"S3 E2", desc:"Episode 2", url:"https://youtube.com/embed/EC8OlMbh1RE", thumb:"chbsthing.png", released:true},
+  {season:3, ep:3, title:"S3 E3", desc:"Episode 3", url:"https://youtube.com/embed/WEFaoX8ZZtc", thumb:"chbsthing.png", released:true},
+  {season:3, ep:4, title:"S3 E4", desc:"Episode 4", url:"https://youtube.com/embed/M6H-Zq-euhk", thumb:"chbsthing.png", released:true},
+  {season:3, ep:5, title:"S3 E5", desc:"Episode 5", url:"https://youtube.com/embed/fD_24bgn0iI", thumb:"chbsthing.png", released:true},
+  {season:3, ep:6, title:"S3 E6", desc:"Episode 6", url:"https://youtube.com/embed/2KLuCNN-m80", thumb:"chbsthing.png", released:true},
+  {season:3, ep:7, title:"S3 E7", desc:"Episode 7", url:"https://youtube.com/embed/Ko-uPSpXFxo", thumb:"chbsthing.png", released:true},
+  {season:3, ep:8, title:"S3 E8", desc:"Episode 8", url:"", thumb:"", released:false},
+  {season:3, ep:9, title:"S3 E9", desc:"Episode 9", url:"", thumb:"", released:false},
+  {season:3, ep:10, title:"S3 E10", desc:"Episode 10", url:"", thumb:"", released:false},
+  {season:3, ep:11, title:"S3 E11", desc:"Episode 11", url:"", thumb:"", released:false},
   {season:3, ep:12, title:"S3 E12", desc:"Episode 12", url:"", thumb:"", released:false}
 
 ];
 
-/* APPLY SHOW INFO */
 document.getElementById("hero-title").textContent = SHOW.name;
 document.getElementById("hero-desc").textContent = SHOW.description;
 
-/* YOUTUBE DETECT */
 function getYouTubeID(url) {
   if (!url) return null;
-  if (url.includes("youtube.com/watch?v=")) return url.split("v=")[1].split("&")[0];
-  if (url.includes("youtu.be/")) return url.split("youtu.be/")[1];
+
+  if (url.includes("youtube.com/embed/")) {
+    return url.split("embed/")[1].split("?")[0];
+  }
+
+  if (url.includes("youtube.com/watch?v=")) {
+    return url.split("v=")[1].split("&")[0];
+  }
+
+  if (url.includes("youtu.be/")) {
+    return url.split("youtu.be/")[1];
+  }
+
   return null;
 }
 
-/* BUILD GRID */
 function buildGrid() {
   const grid = document.getElementById("ep-grid");
   grid.innerHTML = "";
@@ -195,7 +191,6 @@ function buildGrid() {
   }
 }
 
-/* PLAY */
 function playEp(i) {
   const ep = EPISODES[i];
 
@@ -228,7 +223,6 @@ function playEp(i) {
   }
 }
 
-/* CLOSE */
 function closePlayer() {
   document.getElementById("player-view").classList.remove("active");
   document.getElementById("browse-view").style.display = "";
