@@ -1,0 +1,244 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap');
+
+  #splash {
+    position: fixed; inset: 0; background: #333; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; z-index: 9999;
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  #splash.hidden { opacity: 0; pointer-events: none; transform: scale(1.04); }
+
+  #splash .ww-logo {
+    font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem;
+    letter-spacing: 6px; color: #e63946; margin-bottom: 8px;
+  }
+  #splash .ww-sub {
+    font-family: 'DM Sans', sans-serif; color: rgba(255,255,255,0.55);
+    font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 48px;
+  }
+  #splash h2 {
+    font-family: 'DM Sans', sans-serif; color: #fff; font-weight: 300;
+    font-size: 1.25rem; margin-bottom: 32px; text-align: center; line-height: 1.5;
+  }
+  #splash h2 strong { font-weight: 500; color: #fff; }
+
+  .splash-btn {
+    font-family: 'DM Sans', sans-serif; font-size: 0.8rem; letter-spacing: 2px;
+    text-transform: uppercase; border: 1px solid rgba(255,255,255,0.25);
+    background: transparent; color: rgba(255,255,255,0.7); padding: 12px 28px;
+    border-radius: 6px; cursor: pointer; transition: all 0.2s;
+    text-decoration: none; display: inline-block; margin-top: 8px;
+  }
+  .splash-btn:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.5); }
+
+  .btn-enter {
+    background: #e63946; color: #fff; border-color: #e63946;
+    font-size: 0.9rem; padding: 14px 40px; margin-bottom: 12px;
+  }
+  .btn-enter:hover { background: #c02d39; border-color: #c02d39; }
+
+  #app {
+    font-family: 'DM Sans', sans-serif; background: #f4f4f4; min-height: 100vh;
+    opacity: 0; transition: opacity 0.6s ease;
+  }
+  #app.visible { opacity: 1; }
+
+  header {
+    background: #333; color: #fff; padding: 16px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 4px; color: #e63946; }
+  .tagline { font-size: 0.7rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 2px; }
+
+  .genre-nav {
+    background: #fff; border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding: 0 32px; display: flex; overflow-x: auto; scrollbar-width: none;
+  }
+  .genre-nav::-webkit-scrollbar { display: none; }
+
+  .genre-tab {
+    padding: 14px 18px; font-size: 0.75rem; font-weight: 500; letter-spacing: 1.5px;
+    text-transform: uppercase; color: #777; cursor: pointer; border: none; background: none;
+    border-bottom: 2px solid transparent; white-space: nowrap; transition: color 0.2s, border-color 0.2s;
+  }
+  .genre-tab:hover { color: #333; }
+  .genre-tab.active { color: #e63946; border-bottom-color: #e63946; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 36px 24px 60px; }
+
+  .genre-section { display: none; }
+  .genre-section.active { display: block; animation: fadeSlide 0.35s ease; }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 3px;
+    color: #333; margin-bottom: 22px; padding-bottom: 10px;
+    border-bottom: 2px solid rgba(0,0,0,0.08); display: flex; align-items: center; gap: 10px;
+  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: #e63946; display: inline-block; flex-shrink: 0; }
+
+  .poster-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px;
+  }
+
+  .poster-card {
+    display: block; text-decoration: none;
+    border-radius: 10px; overflow: hidden; background: #ccc;
+    aspect-ratio: 2/3; position: relative;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    transition: transform 0.3s cubic-bezier(.22,.68,0,1.2), box-shadow 0.3s ease;
+  }
+  .poster-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+  }
+  .poster-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .poster-card .overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, transparent 55%);
+    opacity: 0; transition: opacity 0.25s ease;
+    display: flex; align-items: flex-end; padding: 14px;
+  }
+  .poster-card:hover .overlay { opacity: 1; }
+  .overlay .title { font-size: 0.82rem; font-weight: 500; color: #fff; line-height: 1.3; }
+
+  footer {
+    text-align: center; padding: 20px 16px;
+    font-size: 0.8rem; color: #777;
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+</style>
+
+<div id="splash">
+  <div class="ww-logo">wwStream</div>
+  <div class="ww-sub">Free Streaming · WonderWorks</div>
+  <h2>Welcome to the <strong>new wwStream</strong>.<br>Redesigned. Faster. Better.</h2>
+  <button class="splash-btn btn-enter" onclick="enterApp()">Enter wwStream</button>
+  <a class="splash-btn" href="oldindex.html">Looking for the old site? Click here</a>
+</div>
+
+<div id="app">
+  <header>
+    <div>
+      <div class="logo">wwStream</div>
+      <div class="tagline">Free Streaming · WonderWorks</div>
+    </div>
+  </header>
+
+  <nav class="genre-nav" id="genreNav">
+    <button class="genre-tab active" data-genre="all">All</button>
+    <button class="genre-tab" data-genre="horror">Horror</button>
+    <button class="genre-tab" data-genre="comedy">Comedy</button>
+    <button class="genre-tab" data-genre="scifi">Sci-Fi</button>
+    <button class="genre-tab" data-genre="documentary">Documentary</button>
+  </nav>
+
+  <main>
+    <div class="genre-section active" id="section-all">
+      <div class="section-title"><span class="dot"></span>All Titles</div>
+      <div class="poster-grid">
+        <a class="poster-card" href="https://oldsoultech.github.io/wwStream/thelodgersinthehotel.html">
+          <img src="http://www.geocities.ws/qlixnewurl/The%20Lodgers%20in%20The%20Hotel%20Poster.png" alt="The Lodgers in the Hotel">
+          <div class="overlay"><div class="title">The Lodgers in the Hotel</div></div>
+        </a>
+        <a class="poster-card" href="chickletcomedy.html">
+          <img src="https://www.geocities.ws/qlixnewurl/Black%20and%20Green%20Stand-up%20Comedy%20Show%20Flyer.png" alt="Chicklet Comedy">
+          <div class="overlay"><div class="title">Chicklet Comedy</div></div>
+        </a>
+        <a class="poster-card" href="thewalkinggingerale.html">
+          <img src="https://geocities.ws/qlixnewurl/Beige%20Retro%20Style%20Movie%20Poster.png" alt="The Walking Ginger Ale">
+          <div class="overlay"><div class="title">The Walking Ginger Ale</div></div>
+        </a>
+        <a class="poster-card" href="https://cosmicmenace.liveedit.stream.wwmedia.site/the-cosmic-menace">
+          <img src="https://morganwashereon.neocities.org/cosmicmenace.png" alt="The Cosmic Menace">
+          <div class="overlay"><div class="title">The Cosmic Menace</div></div>
+        </a>
+        <a class="poster-card" href="https://liveedit.stream.wwmedia.site/thewalkingtree">
+          <img src="https://geocities.ws/qlixnewurl/ChatGPT%20Image%20Jul%2029,%202025,%2008_54_05%20PM.png" alt="The Walking Tree">
+          <div class="overlay"><div class="title">The Walking Tree</div></div>
+        </a>
+        <a class="poster-card" href="cherryhilbikeshow.html">
+          <img src="https://morganwashereon.neocities.org/a%20poster%20that%20reads%20_Cherry%20Hill%20Bike%20Show_%20and%20under%20it%20says%20_With%20Morgan%20_20250904_162434_0000.jpg" alt="Cherry Hill Bike Show">
+          <div class="overlay"><div class="title">Cherry Hill Bike Show</div></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="genre-section" id="section-horror">
+      <div class="section-title"><span class="dot"></span>Horror</div>
+      <div class="poster-grid">
+        <a class="poster-card" href="thewalkinggingerale.html">
+          <img src="https://geocities.ws/qlixnewurl/Beige%20Retro%20Style%20Movie%20Poster.png" alt="The Walking Ginger Ale">
+          <div class="overlay"><div class="title">The Walking Ginger Ale</div></div>
+        </a>
+        <a class="poster-card" href="https://liveedit.stream.wwmedia.site/thewalkingtree">
+          <img src="https://geocities.ws/qlixnewurl/ChatGPT%20Image%20Jul%2029,%202025,%2008_54_05%20PM.png" alt="The Walking Tree">
+          <div class="overlay"><div class="title">The Walking Tree</div></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="genre-section" id="section-comedy">
+      <div class="section-title"><span class="dot"></span>Comedy</div>
+      <div class="poster-grid">
+        <a class="poster-card" href="chickletcomedy.html">
+          <img src="https://www.geocities.ws/qlixnewurl/Black%20and%20Green%20Stand-up%20Comedy%20Show%20Flyer.png" alt="Chicklet Comedy">
+          <div class="overlay"><div class="title">Chicklet Comedy</div></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="genre-section" id="section-scifi">
+      <div class="section-title"><span class="dot"></span>Sci-Fi</div>
+      <div class="poster-grid">
+        <a class="poster-card" href="https://cosmicmenace.liveedit.stream.wwmedia.site/the-cosmic-menace">
+          <img src="https://morganwashereon.neocities.org/cosmicmenace.png" alt="The Cosmic Menace">
+          <div class="overlay"><div class="title">The Cosmic Menace</div></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="genre-section" id="section-documentary">
+      <div class="section-title"><span class="dot"></span>Documentary</div>
+      <div class="poster-grid">
+        <a class="poster-card" href="cherryhilbikeshow.html">
+          <img src="https://morganwashereon.neocities.org/a%20poster%20that%20reads%20_Cherry%20Hill%20Bike%20Show_%20and%20under%20it%20says%20_With%20Morgan%20_20250904_162434_0000.jpg" alt="Cherry Hill Bike Show">
+          <div class="overlay"><div class="title">Cherry Hill Bike Show</div></div>
+        </a>
+        <a class="poster-card" href="https://oldsoultech.github.io/wwStream/thelodgersinthehotel.html">
+          <img src="http://www.geocities.ws/qlixnewurl/The%20Lodgers%20in%20The%20Hotel%20Poster.png" alt="The Lodgers in the Hotel">
+          <div class="overlay"><div class="title">The Lodgers in the Hotel</div></div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer>&copy; <span id="yr"></span> Made by the WonderWorks Group.</footer>
+</div>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  function enterApp() {
+    document.getElementById('splash').classList.add('hidden');
+    setTimeout(() => {
+      document.getElementById('splash').style.display = 'none';
+      document.getElementById('app').classList.add('visible');
+    }, 700);
+  }
+
+  document.querySelectorAll('.genre-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.genre-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.genre-section').forEach(s => s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('section-' + tab.dataset.genre).classList.add('active');
+    });
+  });
+</script>
