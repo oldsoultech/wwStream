@@ -1,0 +1,210 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--red:#e50914;--muted:rgba(255,255,255,0.5)}
+body{font-family:'Inter',sans-serif;background:#000;color:#fff;min-height:100vh;display:flex;flex-direction:column}
+
+.player-top{background:rgba(0,0,0,0.85);padding:12px 20px;display:flex;align-items:center;gap:16px;z-index:10}
+.close-btn{background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-family:'Inter',sans-serif;font-size:0.72rem;padding:6px 14px;border-radius:4px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.15s;text-decoration:none}
+.close-btn:hover{background:rgba(255,255,255,0.1);color:#fff}
+.close-btn svg{width:12px;height:12px}
+.now-playing-label{font-size:0.78rem;color:var(--muted)}
+.now-playing-title{font-size:0.9rem;font-weight:500}
+
+.video-area{position:relative;width:100%;background:#000;flex:1}
+video{width:100%;height:100%;display:block;max-height:calc(100vh - 200px)}
+
+.caption-display{position:absolute;bottom:70px;left:0;right:0;text-align:center;pointer-events:none;z-index:5}
+.caption-text{display:inline-block;background:rgba(0,0,0,0.75);color:#fff;font-family:'Inter',sans-serif;font-size:1rem;padding:4px 12px;border-radius:3px;max-width:80%;line-height:1.5}
+.caption-text:empty{display:none}
+
+.ctrl-wrap{background:#111;padding:10px 20px 14px;border-top:1px solid rgba(255,255,255,0.05)}
+.prog-wrap{height:4px;background:rgba(255,255,255,0.15);border-radius:2px;cursor:pointer;position:relative;margin-bottom:10px}
+.prog-buf{height:100%;background:rgba(255,255,255,0.25);border-radius:2px;position:absolute;top:0;left:0;pointer-events:none}
+.prog-fill{height:100%;background:var(--red);border-radius:2px;position:absolute;top:0;left:0;pointer-events:none;transition:width 0.1s linear}
+.prog-thumb{position:absolute;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:var(--red);pointer-events:none;opacity:0;transition:opacity 0.15s}
+.prog-wrap:hover .prog-thumb{opacity:1}
+.prog-tooltip{position:absolute;top:-28px;transform:translateX(-50%);background:rgba(0,0,0,0.9);color:#fff;font-size:0.68rem;padding:3px 7px;border-radius:3px;pointer-events:none;opacity:0;white-space:nowrap}
+.prog-wrap:hover .prog-tooltip{opacity:1}
+
+.ctrl-row{display:flex;align-items:center;gap:10px}
+.cbtn{background:none;border:none;color:rgba(255,255,255,0.75);cursor:pointer;padding:4px;border-radius:3px;display:flex;align-items:center;transition:color 0.15s}
+.cbtn:hover{color:#fff}
+.cbtn svg{width:20px;height:20px}
+.cbtn.lg svg{width:26px;height:26px}
+
+.vol-row{display:flex;align-items:center;gap:8px}
+input[type=range].vol{width:72px;accent-color:var(--red);cursor:pointer}
+
+.tdisplay{font-size:0.72rem;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.ctrl-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.speed-pill{background:rgba(255,255,255,0.08);border:none;color:rgba(255,255,255,0.6);font-family:'Inter',sans-serif;font-size:0.7rem;padding:4px 8px;border-radius:3px;cursor:pointer;transition:all 0.15s}
+.speed-pill:hover{background:rgba(255,255,255,0.14);color:#fff}
+.speed-pill.on{background:var(--red);color:#fff}
+.cc-btn{font-size:0.68rem;font-weight:600;letter-spacing:0.5px;padding:4px 8px;border-radius:3px;background:rgba(255,255,255,0.08);border:none;color:rgba(255,255,255,0.6);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s}
+.cc-btn:hover{background:rgba(255,255,255,0.14);color:#fff}
+.cc-btn.on{background:#fff;color:#000}
+
+.ep-info-bar{background:#111;padding:14px 20px 18px;border-top:1px solid rgba(255,255,255,0.06)}
+.ei-title{font-size:1rem;font-weight:500}
+.ei-sub{font-size:0.78rem;color:var(--muted);margin-top:3px}
+</style>
+
+<div class="player-top">
+  <a class="close-btn" href="https://geocities.ws/qlixnewurl/extrachbs.html">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3L5 8l5 5"/></svg>
+    Back
+  </a>
+  <div>
+    <div class="now-playing-label">Now playing</div>
+    <div class="now-playing-title">Cherry Hill Bike Show — All Intros and Outros</div>
+  </div>
+</div>
+
+<div class="video-area">
+  <video id="vid" src="https://www.geocities.ws/qlixnewurl/20251227_2025_12_27_00_35_47.MP4"></video>
+  <div class="caption-display"><span class="caption-text" id="cap-text"></span></div>
+</div>
+
+<div class="ctrl-wrap">
+  <div class="prog-wrap" id="prog-wrap">
+    <div class="prog-buf" id="prog-buf" style="width:0%"></div>
+    <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+    <div class="prog-thumb" id="prog-thumb" style="left:0%"></div>
+    <div class="prog-tooltip" id="prog-tip">0:00</div>
+  </div>
+  <div class="ctrl-row">
+    <button class="cbtn" onclick="skip(-10)" title="Rewind 10s">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+    </button>
+    <button class="cbtn lg" onclick="togglePlay()">
+      <svg id="ico-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      <svg id="ico-pause" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
+    <button class="cbtn" onclick="skip(10)" title="Forward 10s">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 13c0 3.31-2.69 6-6 6s-6-2.69-6-6 2.69-6 6-6v4l5-5-5-5v4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8h-2z"/></svg>
+    </button>
+    <div class="vol-row">
+      <button class="cbtn" onclick="toggleMute()">
+        <svg id="ico-vol" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        <svg id="ico-mute" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+      </button>
+      <input type="range" class="vol" id="vol" min="0" max="1" step="0.02" value="1" oninput="setVol(this.value)">
+    </div>
+    <span class="tdisplay" id="tdisplay">0:00 / 0:00</span>
+    <div class="ctrl-right">
+      <button class="speed-pill on" data-s="1" onclick="setSpeed(this)">1×</button>
+      <button class="speed-pill" data-s="1.25" onclick="setSpeed(this)">1.25×</button>
+      <button class="speed-pill" data-s="1.5" onclick="setSpeed(this)">1.5×</button>
+      <button class="speed-pill" data-s="2" onclick="setSpeed(this)">2×</button>
+      <button class="cc-btn" id="cc-btn" onclick="toggleCC()">CC</button>
+      <button class="cbtn" onclick="goFS()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="ep-info-bar">
+  <div class="ei-title">All Intros and Outros</div>
+  <div class="ei-sub">Cherry Hill Bike Show · Extra</div>
+</div>
+
+<script>
+const vid = document.getElementById('vid');
+const progFill = document.getElementById('prog-fill');
+const progBuf = document.getElementById('prog-buf');
+const progThumb = document.getElementById('prog-thumb');
+const progTip = document.getElementById('prog-tip');
+const progWrap = document.getElementById('prog-wrap');
+const capText = document.getElementById('cap-text');
+let ccOn = false;
+
+function fmt(s){
+  s=Math.round(s||0);
+  return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+}
+
+function togglePlay(){ if(vid.paused) vid.play(); else vid.pause(); }
+
+vid.addEventListener('play',()=>{
+  document.getElementById('ico-play').style.display='none';
+  document.getElementById('ico-pause').style.display='';
+});
+vid.addEventListener('pause',()=>{
+  document.getElementById('ico-play').style.display='';
+  document.getElementById('ico-pause').style.display='none';
+});
+
+vid.addEventListener('timeupdate',()=>{
+  if(!vid.duration) return;
+  const pct=(vid.currentTime/vid.duration)*100;
+  progFill.style.width=pct+'%';
+  progThumb.style.left=pct+'%';
+  document.getElementById('tdisplay').textContent=fmt(vid.currentTime)+' / '+fmt(vid.duration);
+});
+
+vid.addEventListener('progress',()=>{
+  if(!vid.duration||!vid.buffered.length) return;
+  progBuf.style.width=(vid.buffered.end(vid.buffered.length-1)/vid.duration*100)+'%';
+});
+
+let isSeeking=false;
+function doSeek(e){
+  const r=progWrap.getBoundingClientRect();
+  const pct=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
+  if(vid.duration) vid.currentTime=pct*vid.duration;
+  progTip.style.left=(pct*100)+'%';
+  progTip.textContent=fmt(pct*(vid.duration||0));
+}
+progWrap.addEventListener('mousedown',e=>{isSeeking=true;doSeek(e);});
+progWrap.addEventListener('mousemove',e=>{
+  const r=progWrap.getBoundingClientRect();
+  const pct=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
+  progTip.style.left=(pct*100)+'%';
+  progTip.textContent=fmt(pct*(vid.duration||0));
+  if(isSeeking) doSeek(e);
+});
+document.addEventListener('mouseup',()=>isSeeking=false);
+
+function skip(s){ vid.currentTime=Math.max(0,Math.min(vid.duration||0,vid.currentTime+s)); }
+
+function setVol(v){
+  vid.volume=v; vid.muted=v==0;
+  document.getElementById('ico-vol').style.display=v==0?'none':'';
+  document.getElementById('ico-mute').style.display=v==0?'':'none';
+}
+
+function toggleMute(){
+  vid.muted=!vid.muted;
+  document.getElementById('ico-vol').style.display=vid.muted?'none':'';
+  document.getElementById('ico-mute').style.display=vid.muted?'':'none';
+}
+
+function setSpeed(btn){
+  document.querySelectorAll('.speed-pill').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  vid.playbackRate=parseFloat(btn.dataset.s);
+}
+
+function toggleCC(){
+  ccOn=!ccOn;
+  document.getElementById('cc-btn').classList.toggle('on',ccOn);
+  if(!ccOn) capText.textContent='';
+}
+
+function goFS(){
+  const wrap=document.querySelector('.video-area');
+  if(document.fullscreenElement) document.exitFullscreen();
+  else wrap.requestFullscreen();
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.code==='Space'){e.preventDefault();togglePlay();}
+  if(e.code==='ArrowLeft') skip(-10);
+  if(e.code==='ArrowRight') skip(10);
+  if(e.code==='KeyF') goFS();
+  if(e.code==='KeyC') toggleCC();
+});
+</script>
