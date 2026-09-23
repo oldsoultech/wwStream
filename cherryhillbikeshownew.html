@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Watch</title>
+<title>Watch - Cherry Hill Bike Show</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
@@ -75,8 +75,6 @@ body {
   display: block;
 }
 
-.hero-text { }
-
 .hero-title { font-family:'Bebas Neue'; font-size:3rem; }
 .hero-desc { color:var(--muted); margin:10px 0; }
 
@@ -102,6 +100,12 @@ body {
   cursor:pointer;
   border-radius:8px;
   overflow:hidden;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.ep-card:hover {
+  transform: translateY(-4px);
+  background: var(--card2);
 }
 
 .ep-thumb { aspect-ratio:16/9; background:#333; }
@@ -112,8 +116,22 @@ body {
 #player-view { display:none; flex-direction:column; height:100vh; background:#000; }
 #player-view.active { display:flex; }
 
+.player-controls {
+  padding: 10px 20px;
+  background: #111;
+}
+
+.btn-back {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 .video-wrap { flex:1; position:relative; }
-video, iframe { width:100%; height:100%; }
+video, iframe { width:100%; height:100%; border:none; }
 
 .no-video-state {
   position:absolute;
@@ -137,8 +155,8 @@ video, iframe { width:100%; height:100%; }
         <img src="chbsthing.png" alt="Cherry Hill Bike Show">
       </div>
       <div class="hero-text">
-        <div class="hero-title" id="hero-title">Show Name</div>
-        <div class="hero-desc" id="hero-desc"></div>
+        <div class="hero-title" id="hero-title">Cherry Hill Bike Show</div>
+        <div class="hero-desc" id="hero-desc">Watch episodes and extra footage from the Cherry Hill Bike Show.</div>
         <button class="btn-primary" id="hero-play-btn">Play</button>
         <button class="btn-primary" onclick="window.location.href='https://geocities.ws/qlixnewurl/extrachbs.html'">Extras</button>
         <button class="btn-primary" onclick="window.location.href='cherryhilbikeshow.html'">
@@ -152,9 +170,11 @@ video, iframe { width:100%; height:100%; }
 </div>
 
 <div id="player-view">
-  <button onclick="closePlayer()">Back</button>
+  <div class="player-controls">
+    <button class="btn-back" onclick="closePlayer()">Back</button>
+  </div>
   <div class="video-wrap" id="video-wrap">
-    <div class="no-video-state" id="no-vid">No video</div>
+    <div class="no-video-state" id="no-vid">No video available</div>
     <video id="vid" controls></video>
   </div>
 </div>
@@ -162,14 +182,13 @@ video, iframe { width:100%; height:100%; }
 <script>
 const SHOW = {
   name: "Cherry Hill Bike Show",
-  description: "",
-  seasons: 3
+  description: "Watch episodes and extra footage from the Cherry Hill Bike Show.",
+  seasons: 4
 };
 
 const EPISODES = [
-
   // SEASON 1
-  {season:1, ep:1, title:"S1 E1", desc:"Episode 1", url:"", thumb:"", released:false},
+  {season:1, ep:1, title:"S1 E1", desc:"Episode 1", url:"", thumb:"chbsthing.png", released:false},
   {season:1, ep:2, title:"S1 E2", desc:"Episode 2", url:"https://www.youtube.com/embed/hWKq1wF-vlU", thumb:"chbsthing.png", released:true},
   {season:1, ep:3, title:"S1 E3", desc:"Episode 3", url:"https://www.youtube.com/embed/SAidx1elX2w", thumb:"chbsthing.png", released:true},
   {season:1, ep:4, title:"S1 E4", desc:"Episode 4", url:"https://www.youtube.com/embed/5MWeLVrNmIQ", thumb:"chbsthing.png", released:true},
@@ -196,13 +215,12 @@ const EPISODES = [
   {season:3, ep:9, title:"S3 E9", desc:"Episode 9", url:"", thumb:"", released:false},
   {season:3, ep:10, title:"S3 E10", desc:"Episode 10", url:"", thumb:"", released:false},
   {season:3, ep:11, title:"S3 E11", desc:"Episode 11", url:"", thumb:"", released:false},
-  {season:3, ep:12, title:"S3 E12", desc:"Episode 12", url:"", thumb:"", released:false}
+  {season:3, ep:12, title:"S3 E12", desc:"Episode 12", url:"", thumb:"", released:false},
 
-   // SEASON 4
+  // SEASON 4
   {season:4, ep:1, title:"S4 E1", desc:"Episode 1", url:"", thumb:"chbsthing.png", released:false},
   {season:4, ep:2, title:"S4 E2", desc:"Episode 2", url:"https://youtube.com/embed/N8Ozbqu_wZ4", thumb:"chbsthing.png", released:true},
-  {season:4, ep:3, title:"S4 E3", desc:"Episode 3", url:"", thumb:"chbsthing.png", released:false},
- 
+  {season:4, ep:3, title:"S4 E3", desc:"Episode 3", url:"", thumb:"chbsthing.png", released:false}
 ];
 
 document.getElementById("hero-title").textContent = SHOW.name;
@@ -210,19 +228,9 @@ document.getElementById("hero-desc").textContent = SHOW.description;
 
 function getYouTubeID(url) {
   if (!url) return null;
-
-  if (url.includes("youtube.com/embed/")) {
-    return url.split("embed/")[1].split("?")[0];
-  }
-
-  if (url.includes("youtube.com/watch?v=")) {
-    return url.split("v=")[1].split("&")[0];
-  }
-
-  if (url.includes("youtu.be/")) {
-    return url.split("youtu.be/")[1];
-  }
-
+  if (url.includes("youtube.com/embed/")) return url.split("embed/")[1].split("?")[0];
+  if (url.includes("youtube.com/watch?v=")) return url.split("v=")[1].split("&")[0];
+  if (url.includes("youtu.be/")) return url.split("youtu.be/")[1];
   return null;
 }
 
@@ -234,13 +242,12 @@ function buildGrid() {
 
   visible.forEach(ep => {
     const i = EPISODES.indexOf(ep);
-
     const card = document.createElement("div");
     card.className = "ep-card";
 
     card.innerHTML = `
       <div class="ep-thumb">
-        ${ep.thumb ? `<img src="${ep.thumb}">` : ""}
+        ${ep.thumb ? `<img src="${ep.thumb}" alt="${ep.title}">` : ""}
       </div>
       <div class="ep-info">
         <div>${ep.title}</div>
@@ -271,19 +278,16 @@ function playEp(i) {
 
   if (yt) {
     vid.style.display = "none";
-
     let iframe = document.createElement("iframe");
     iframe.src = "https://www.youtube.com/embed/" + yt + "?autoplay=1";
+    iframe.allow = "autoplay; encrypted-media; picture-in-picture";
     iframe.allowFullscreen = true;
     iframe.id = "yt";
-
     wrap.appendChild(iframe);
-
   } else if (ep.url) {
     vid.style.display = "block";
     vid.src = ep.url;
     vid.play();
-
   } else {
     document.getElementById("no-vid").style.display = "flex";
   }
